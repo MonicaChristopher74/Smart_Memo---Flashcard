@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Memo</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Smart Memo</h1>
+
+        <!-- Streak Counter -->
+        <div id="streak-count"> Streak: 0 </div>
+
+        <!-- Log out -->
+        <button id="logout-button">Logout</button><br>
+
+        <!-- Search Bar -->
+        <input type="text" id="search-bar" placeholder="Search Flashcards">
+
+        <!-- Input Section -->
+        <div class="input-container">
+            <input type="text" id="question-input" placeholder="Enter a question">
+            <button onclick="startVoiceInput('question')">Speak Question</button>
+
+            <input type="text" id="answer-input" placeholder="Enter the answer">
+            <button onclick="startVoiceInput('answer')">Speak Answer</button>
+
+            <label for="question-image">Question Image</label>
+            <input type="file" id="question-image" accept="image/*" title="Upload Question Image">
+            <img id="preview-question-image" class="media-preview" alt ="image" />
+
+            <label for="question-audio">Question Audio</label>
+            <input type="file" id="question-audio" accept="audio/*" title="Upload Question Audio">
+            <audio id="preview-question-audio" class="media-preview" controls></audio>
+
+            <label for="question-video">Question Video</label>
+            <input type="file" id="question-video" accept="video/*" title="Upload Question Video">
+            <video id="preview-question-video" class="media-preview" controls></video>
+
+            <label for="answer-image">Answer Image</label>
+            <input type="file" id="answer-image" accept="image/*" title="Upload Answer Image">
+            <img id="preview-answer-image" class="media-preview" alt ="image" />
+
+            <label for="answer-audio">Answer Audio</label>
+            <input type="file" id="answer-audio" accept="audio/*" title="Upload Answer Audio">
+            <audio id="preview-answer-audio" class="media-preview" controls></audio>
+
+            <label for="answer-video">Answer Video</label>
+            <input type="file" id="answer-video" accept="video/*" title="Upload Answer Video">
+            <video id="preview-answer-video" class="media-preview" controls></video>
+
+            <input list="category-suggestions" id="category-input" placeholder="Enter or select a category">
+            <datalist id="category-suggestions">
+                <option value="General">
+                <option value="Math">
+                <option value="Math→Algebra">
+                <option value="Math→Geometry">
+                <option value="Science">
+                <option value="Science→Physics">
+                <option value="Science→Physics→Mechanics">
+                <option value="Science→Physics→Laws of Motion">
+                <option value="Computer Science">
+                <option value="Computer Science→Algorithms">
+            </datalist>
+
+            <button id="add-card">Add Card</button>
+        </div>
+        <!---Admin only section-->
+        <div id="admin-panel" class="hidden">
+            <h3>Admin Controls</h3>
+            <button onclick="alert('Manage users panel coming soon')">Manage Users</button>
+        </div>
+        <!-- Flashcards Container -->
+        <div class="flashcards-container">
+            <!-- Flashcards will be dynamically added here -->
+        </div>
+    </div>
+
+    <!-- Include Cordova -->
+    <script src="cordova.js"></script>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-storage-compat.js"></script>
+    
+    <!-- Include JavaScript files -->
+    <script src="js/firebase.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/database.js"></script>
+    <script src="js/sync.js"></script>
+    <script src="js/app.js" ></script>
+
+    <!-- Role-based visibility logic -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const role = localStorage.getItem("userRole");
+
+            if (role === "general") {
+                document.querySelectorAll("button[onclick^='startVoiceInput']").forEach(btn => btn.style.display = "none");
+            }
+
+            if (role !== "admin") {
+                document.getElementById("admin-panel").style.display = "none";
+            } else {
+                document.getElementById("admin-panel").style.display = "block";
+            }
+        });
+    </script>
+</body>
+</html>
